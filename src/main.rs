@@ -13,7 +13,6 @@ async fn main() {
 
     let mut player_1 = player::Player::new(PLAYER_W, PLAYER_H, 470.0, 240.0);
     let mut player_2 = player::Player::new(PLAYER_W, PLAYER_H, 10.0, 240.0);
-    // let mut player_1 = player::Player::new();
     let mut ball = ball::Ball::new(260., 260., BALL_R);
 
     let mut score_1: i8 = 0;

@@ -48,7 +48,7 @@ impl Ball {
             Scored::P2 => 380.,
             Scored::Noone => 0.0,
         };
-        self.y = 0.0;
+        self.y = 240.;
         self.dx = BALL_SPEED;
         self.dy = 0.;
     }
