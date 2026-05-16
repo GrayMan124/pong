@@ -95,7 +95,7 @@ fn check_collisions(player1: &player::Player, player2: &player::Player, ball: &m
                 None => ball.dy,
             };
         } else {
-            ball.dy = match player2.coll_dir(ball.x, ball.y, ball.r) {
+            ball.dy = match player1.coll_dir(ball.x, ball.y, ball.r) {
                 Some(bounce) => match bounce {
                     player::Bounce::Up => ball.dy - 40.,
                     player::Bounce::Down => ball.dy + 40.,
