@@ -44,12 +44,16 @@ impl Ball {
     }
     fn reset(&mut self, scored: Scored) {
         self.x = match scored {
-            Scored::P1 => 120.,
-            Scored::P2 => 380.,
+            Scored::P1 => 380.,
+            Scored::P2 => 120.,
             Scored::Noone => 0.0,
         };
         self.y = 240.;
-        self.dx = BALL_SPEED;
+        self.dx = match scored {
+            Scored::P1 => -BALL_SPEED,
+            Scored::P2 => BALL_SPEED,
+            Scored::Noone => 0.0,
+        };
         self.dy = 0.;
     }
 }
