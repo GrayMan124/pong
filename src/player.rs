@@ -11,16 +11,15 @@ pub struct Player {
 pub enum Bounce {
     Up,
     Down,
-    Middle,
 }
 
 impl Player {
     pub fn new(w: f32, h: f32, x: f32, y: f32) -> Player {
         Player {
-            w: w,
-            h: h,
-            x: x,
-            y: y,
+            w,
+            h,
+            x,
+            y,
             speed: PLAYER_SPEED,
         }
     }
@@ -30,22 +29,18 @@ impl Player {
     }
 
     pub fn check_collision(&self, x: f32, y: f32, r: f32) -> bool {
-        if x + r >= self.x && x - r < self.x + self.w && y >= self.y && y < self.y + self.h {
-            true
-        } else {
-            false
-        }
+        x + r >= self.x && x - r < self.x + self.w && y >= self.y && y < self.y + self.h
     }
 
-    pub fn coll_dir(&self, x: f32, y: f32, r: f32) -> Bounce {
+    pub fn coll_dir(&self, x: f32, y: f32, r: f32) -> Option<Bounce> {
         if x + r >= self.x && x - r < self.x + self.w && y >= self.y && y < self.y + self.h {
             if y >= self.y && y < self.y + self.h / 2.0 {
-                Bounce::Up
+                Some(Bounce::Up)
             } else {
-                Bounce::Down
+                Some(Bounce::Down)
             }
         } else {
-            Bounce::Middle
+            None
         }
     }
 }

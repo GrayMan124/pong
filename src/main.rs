@@ -15,8 +15,8 @@ async fn main() {
     let mut player_2 = player::Player::new(PLAYER_W, PLAYER_H, 10.0, 240.0);
     let mut ball = ball::Ball::new(260., 260., BALL_R);
 
-    let mut score_1: i8 = 0;
-    let mut score_2: i8 = 0;
+    let mut score_1: u32 = 0;
+    let mut score_2: u32 = 0;
 
     set_camera(&Camera2D {
         zoom: vec2(1. / SCR_W * 2., 1. / SCR_H * 2.),
@@ -41,8 +41,8 @@ async fn main() {
         let delta = get_frame_time();
 
         //handle some stuff
-        handle_movement(&mut player_1, &mut player_2, delta).await;
-        check_collisions(&player_1, &player_2, &mut ball).await;
+        handle_movement(&mut player_1, &mut player_2, delta);
+        check_collisions(&player_1, &player_2, &mut ball);
 
         if ball.y >= SCR_H || ball.y <= 0. {
             ball.bounce_top_wall();
@@ -66,7 +66,7 @@ async fn main() {
     }
 }
 
-async fn handle_movement(player1: &mut player::Player, player2: &mut player::Player, delta: f32) {
+fn handle_movement(player1: &mut player::Player, player2: &mut player::Player, delta: f32) {
     if is_key_down(KeyCode::Up) {
         player1.update_move(delta, -1.0)
     } else if is_key_down(KeyCode::Down) {
@@ -81,26 +81,26 @@ async fn handle_movement(player1: &mut player::Player, player2: &mut player::Pla
     }
 }
 
-async fn check_collisions(
-    player1: &player::Player,
-    player2: &player::Player,
-    ball: &mut ball::Ball,
-) {
+fn check_collisions(player1: &player::Player, player2: &player::Player, ball: &mut ball::Ball) {
     if player1.check_collision(ball.x, ball.y, ball.r)
         || player2.check_collision(ball.x, ball.y, ball.r)
     {
         ball.dx = ball.dx * -1.3 + 30.;
         if player1.check_collision(ball.x, ball.y, ball.r) {
             ball.dy = match player1.coll_dir(ball.x, ball.y, ball.r) {
-                player::Bounce::Up => ball.dy - 40.,
-                player::Bounce::Down => ball.dy + 40.,
-                player::Bounce::Middle => ball.dy,
+                Some(bounce) => match bounce {
+                    player::Bounce::Up => ball.dy - 40.,
+                    player::Bounce::Down => ball.dy + 40.,
+                },
+                None => ball.dy,
             };
         } else {
             ball.dy = match player2.coll_dir(ball.x, ball.y, ball.r) {
-                player::Bounce::Up => ball.dy - 40.,
-                player::Bounce::Down => ball.dy + 40.,
-                player::Bounce::Middle => ball.dy,
+                Some(bounce) => match bounce {
+                    player::Bounce::Up => ball.dy - 40.,
+                    player::Bounce::Down => ball.dy + 40.,
+                },
+                None => ball.dy,
             };
         }
     }

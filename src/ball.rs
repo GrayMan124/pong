@@ -17,9 +17,9 @@ pub enum Scored {
 impl Ball {
     pub fn new(x: f32, y: f32, r: f32) -> Ball {
         Ball {
-            x: x,
-            y: y,
-            r: r,
+            x,
+            y,
+            r,
             dx: BALL_SPEED,
             dy: 0.,
         }
